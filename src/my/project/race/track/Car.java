@@ -1,24 +1,52 @@
 package my.project.race.track;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class Car implements Runnable {
+
+    private final int id;
+    private final Track track;
+    private int nPitStops;
+
+
     public Car(int id, int nPitStops, Track track) {
-        throw new UnsupportedOperationException("Method not yet implemented");
+        this.id = id;
+        this.nPitStops = nPitStops;
+        this.track = track;
     }
 
     @Override
     public void run() {
-        throw new UnsupportedOperationException("Method not yet implemented");
+
+           try {
+               // with sleep  simulate racing car
+               Thread.sleep((long) (Math.random() * 1000));
+               // car need to ender the pit
+               track.enterPit(this);
+
+           } catch (InterruptedException e) {
+               throw new RuntimeException(e);
+           }
+
     }
 
     public int getCarId() {
-        throw new UnsupportedOperationException("Method not yet implemented");
+        return id;
     }
 
-    public int getNPitStops() {
-        throw new UnsupportedOperationException("Method not yet implemented");
+    public synchronized int getNPitStops() {
+        return nPitStops;
     }
 
     public Track getTrack() {
-        throw new UnsupportedOperationException("Method not yet implemented");
+        return track;
     }
+
+    public synchronized void decrementPitStops() {
+        if (nPitStops > 0) {
+            nPitStops--;
+        }
+
+    }
+
 }
